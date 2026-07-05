@@ -24,19 +24,29 @@ A parking lot can have multiple floors.
 
 ---
 
-## 3. ParkingSlot
+## ParkingSlot
+
+### Why?
+
+Represents one physical parking space.
 
 ### Responsibility
 
-Represents one parking space.
+- Park one compatible vehicle.
+- Track occupancy.
+- Release itself when vehicle exits.
 
-### Stores
+### State
 
 - Slot Number
-- Vehicle Type
-- Occupied Status
+- Slot Type
+- Occupied
 
----
+### Future Extension
+
+- EV Charging
+- Reserved Slot
+- Handicap Slot
 
 ## 4. Vehicle
 
