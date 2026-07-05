@@ -1,16 +1,14 @@
 class Ticket {
     String ticketNo;
-    String vehicleNo;
-    String parkingslotNo;
-    String parkingSlotId;
+    private Vehicle vehicle;
+    private ParkingSlot parkingSlot;
     long entryTime;
     long exitTime;
 
-    public Ticket(String ticketNo, String vehicleNo, String parkingslotNo, String parkingSlotId, long entryTime) {
+    public Ticket(String ticketNo, Vehicle vehicle, ParkingSlot parkingSlot, long entryTime) {
         this.ticketNo = ticketNo;
-        this.vehicleNo = vehicleNo;
-        this.parkingslotNo = parkingslotNo;
-        this.parkingSlotId = parkingSlotId;
+        this.vehicle = vehicle;
+        this.parkingSlot = parkingSlot;
         this.entryTime = entryTime;
     }   
 
@@ -19,15 +17,15 @@ class Ticket {
     }
 
     public String getVehicleNo() {
-        return vehicleNo;
+        return vehicle.getVehicleNumber();
     }
 
     public String getParkingslotNo() {
-        return parkingslotNo;
+        return parkingSlot.getSlotNumber();
     }
 
     public String getParkingSlotId() {
-        return parkingSlotId;
+        return parkingSlot.getSlotId();
     }
 
     public long getEntryTime() {

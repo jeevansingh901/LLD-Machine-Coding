@@ -1,27 +1,39 @@
-class ParkingFloor{
+public class ParkingFloor {
 
-    int floorNo;
-    List<ParkingSlot> parkingSlots;
+    private final int floorNumber;
 
-    public ParkingFloor(int floorNo, List<ParkingSlot> parkingSlots) {
-        this.floorNo = floorNo;
+    private final List<ParkingSlot> parkingSlots;
+
+    public ParkingFloor(int floorNumber,
+                        List<ParkingSlot> parkingSlots) {
+
+        this.floorNumber = floorNumber;
         this.parkingSlots = parkingSlots;
     }
 
-    public int getFloorNo() {
-        return floorNo;
+    public int getFloorNumber() {
+        return floorNumber;
     }
-    
+
     public List<ParkingSlot> getParkingSlots() {
-        return parkingSlots;
+        return Collections.unmodifiableList(parkingSlots);
     }
 
-    public void setParkingSlots(List<ParkingSlot> parkingSlots) {
-        this.parkingSlots = parkingSlots;
+    public ParkingSlot findAvailableSlot(SlotType slotType) {
+
+        for (ParkingSlot slot : parkingSlots) {
+
+            if (slot.isAvailable()
+                    && slot.getSlotType() == slotType) {
+
+                return slot;
+            }
+        }
+
+        return null;
     }
 
-    public void setFloorNo(int floorNo) {
-        this.floorNo = floorNo;
+    public boolean hasAvailableSlot(SlotType slotType) {
+        return findAvailableSlot(slotType) != null;
     }
-
 }
