@@ -4,11 +4,14 @@ public class ParkingFloor {
 
     private final List<ParkingSlot> parkingSlots;
 
-    public ParkingFloor(int floorNumber,
-                        List<ParkingSlot> parkingSlots) {
+    public ParkingFloor(
+        int floorNumber,
+        Map<SlotType, Integer> slotConfiguration) {
 
-        this.floorNumber = floorNumber;
-        this.parkingSlots = parkingSlots;
+    this.floorNumber = floorNumber;
+    this.parkingSlots = new ArrayList<>();
+
+    initializeSlots(slotConfiguration);
     }
 
     public int getFloorNumber() {
@@ -36,4 +39,25 @@ public class ParkingFloor {
     public boolean hasAvailableSlot(SlotType slotType) {
         return findAvailableSlot(slotType) != null;
     }
+
+    private void initializeSlots(
+        Map<SlotType, Integer> slotConfiguration) {
+
+    for (Map.Entry<SlotType, Integer> entry
+            : slotConfiguration.entrySet()) {
+
+        SlotType slotType = entry.getKey();
+        int count = entry.getValue();
+
+        for (int i = 1; i <= count; i++) {
+
+            String slotNumber =
+                    slotType.name().charAt(0) + "-" + i;
+
+            parkingSlots.add(
+                    new ParkingSlot(slotNumber, slotType)
+            );
+        }
+    }
+  }
 }
