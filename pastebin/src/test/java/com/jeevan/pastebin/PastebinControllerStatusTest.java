@@ -2,6 +2,7 @@ package com.jeevan.pastebin;
 
 import com.jeevan.pastebin.controller.PastebinController;
 import com.jeevan.pastebin.exception.PasteNotFoundException;
+import com.jeevan.pastebin.exception.ServiceUnavailableException;
 import com.jeevan.pastebin.service.PastebinService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,14 @@ class PastebinControllerStatusTest {
         mockMvc.perform(get("/api/pastes/ "))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Paste ID cannot be null or empty"));
+    }
+
+    @Test
+    void shouldReturn503WhenStorageIsUnavailable() throws Exception {
+        when(pastebinService.get("db-down")).thenThrow(new ServiceUnavailableException("Storage unavailable"));
+
+        mockMvc.perform(get("/api/pastes/db-down"))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(content().string("Storage unavailable"));
     }
 }

@@ -1,7 +1,6 @@
 package com.jeevan.pastebin.repository;
 
 import com.jeevan.pastebin.exception.PasteNotFoundException;
-import com.jeevan.pastebin.exception.ServiceUnavailableException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -32,10 +31,6 @@ public class PastebinRepository {
             throw new PasteNotFoundException("Paste not found for id: " + pasteId);
         }
 
-        try {
-            return pasteStorage.get(pasteId);
-        } catch (Exception e) {
-            throw new ServiceUnavailableException("Storage unavailable");
-        }
+        return pasteStorage.get(pasteId);
     }
 }

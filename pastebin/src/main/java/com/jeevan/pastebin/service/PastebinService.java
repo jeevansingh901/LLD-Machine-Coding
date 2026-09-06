@@ -13,26 +13,22 @@ public class PastebinService {
     private final PastebinRepository pastebinRepository;
 
     public String post(String content) {
-        try {
-            return pastebinRepository.save(content);
-        } catch (Exception e) {
-            throw new ServiceUnavailableException("Service unavailable while creating paste");
+        if (content == null || content.isBlank()) {
+            throw new IllegalArgumentException("Content cannot be null or empty");
         }
+        return pastebinRepository.save(content);
     }
 
     public String get(String id) {
-        if (id == null || id.isEmpty()) {
+        if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("Paste ID cannot be null or empty");
         }
 
-        try {
-            return pastebinRepository.get(id);
-        } catch (Exception e) {
-            if (e instanceof IllegalArgumentException) {
-                throw e;
-            }
-            throw new ServiceUnavailableException("Service unavailable while fetching paste");
+        if (pastebinRepository == null) {
+            throw new ServiceUnavailableException("Storage unavailable");
         }
+
+        return pastebinRepository.get(id);
     }
 
     public String getStatus() {
