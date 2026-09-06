@@ -1,6 +1,8 @@
 package com.jeevan.pastebin.repository;
 
 import com.jeevan.pastebin.exception.PasteNotFoundException;
+import com.jeevan.pastebin.exception.ServiceUnavailableException;
+import com.jeevan.pastebin.exception.StorageAccessException;
 import com.jeevan.pastebin.storage.StorageBackend;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -16,7 +18,11 @@ public class PastebinRepository {
             throw new IllegalArgumentException("Content cannot be null or empty");
         }
 
-        return storageBackend.save(content);
+        try {
+            return storageBackend.save(content);
+        } catch (StorageAccessException exception) {
+            throw new ServiceUnavailableException("Storage unavailable");
+        }
     }
 
     public String get(String pasteId) {
@@ -24,7 +30,11 @@ public class PastebinRepository {
             throw new IllegalArgumentException("Paste ID cannot be null or empty");
         }
 
-        return storageBackend.findById(pasteId)
-                .orElseThrow(() -> new PasteNotFoundException("Paste not found for id: " + pasteId));
+        try {
+            return storageBackend.findById(pasteId)
+                    .orElseThrow(() -> new PasteNotFoundException("Paste not found for id: " + pasteId));
+        } catch (StorageAccessException exception) {
+            throw new ServiceUnavailableException("Storage unavailable");
+        }
     }
 }
