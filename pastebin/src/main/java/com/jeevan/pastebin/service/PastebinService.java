@@ -1,7 +1,6 @@
 
 package com.jeevan.pastebin.service;
 
-import com.jeevan.pastebin.exception.ServiceUnavailableException;
 import com.jeevan.pastebin.repository.PastebinRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,10 +21,6 @@ public class PastebinService {
     public String get(String id) {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("Paste ID cannot be null or empty");
-        }
-
-        if (pastebinRepository == null) {
-            throw new ServiceUnavailableException("Storage unavailable");
         }
 
         return pastebinRepository.get(id);

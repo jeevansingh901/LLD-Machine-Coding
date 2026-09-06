@@ -1,25 +1,22 @@
 package com.jeevan.pastebin.repository;
 
 import com.jeevan.pastebin.exception.PasteNotFoundException;
+import com.jeevan.pastebin.storage.StorageBackend;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
 @Repository
+@RequiredArgsConstructor
 public class PastebinRepository {
 
-    private final Map<String, String> pasteStorage = new ConcurrentHashMap<>();
+    private final StorageBackend storageBackend;
 
     public String save(String content) {
         if (content == null || content.isBlank()) {
             throw new IllegalArgumentException("Content cannot be null or empty");
         }
 
-        String pasteId = UUID.randomUUID().toString();
-        pasteStorage.put(pasteId, content);
-        return pasteId;
+        return storageBackend.save(content);
     }
 
     public String get(String pasteId) {
@@ -27,10 +24,7 @@ public class PastebinRepository {
             throw new IllegalArgumentException("Paste ID cannot be null or empty");
         }
 
-        if (!pasteStorage.containsKey(pasteId)) {
-            throw new PasteNotFoundException("Paste not found for id: " + pasteId);
-        }
-
-        return pasteStorage.get(pasteId);
+        return storageBackend.findById(pasteId)
+                .orElseThrow(() -> new PasteNotFoundException("Paste not found for id: " + pasteId));
     }
 }
