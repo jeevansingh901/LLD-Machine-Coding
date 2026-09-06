@@ -2,11 +2,16 @@
 package com.jeevan.pastebin.controller;
 
 import com.jeevan.pastebin.service.PastebinService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api") 
+@RequestMapping("/api")
 public class PastebinController {
 
     private final PastebinService pastebinService;
@@ -15,18 +20,15 @@ public class PastebinController {
         this.pastebinService = pastebinService;
     }
 
-
-    @PostMapping("/paste")
+    @PostMapping("/pastes")
     public ResponseEntity<String> createPaste(@RequestBody String content) {
-        // Logic to create a new paste and return its ID    
-           return ResponseEntity.ok(pastebinService.post(content));
+        return ResponseEntity.ok(pastebinService.post(content));
     }
 
-    @GetMapping("/paste/{id}")
-    public ResponseEntity<String> getPaste(@PathVariable @Valid String id) {   
-
+    @GetMapping("/pastes/{id}")
+    public ResponseEntity<String> getPaste(@PathVariable String id) {
         return ResponseEntity.ok(pastebinService.get(id));
-    }       
+    }
 
     @GetMapping("/health")
     public String health() {
